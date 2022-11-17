@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block body %}
+
+{% load static %}
+{% load crispy_forms_tags%}
+
+        <main class="main">
+        	<div class="page-header text-center" style="background-image: url('{% static 'images/page-header-bg.jpg' %}')">
+        		<div class="container-fluid">
+        			<h1 class="page-title">Mağaza<span></span></h1>
+        		</div><!-- End .container-fluid -->
+        	</div><!-- End .page-header -->
+            <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+                <div class="container-fluid">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'blog:index' %}">Ana səhifə</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'blog:shop' %}">Mağaza</a></li>
+                    </ol>
+                </div><!-- End .container-fluid -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="page-content borderr">
+                <div class="container-fluid borderr">
+        			<div class="toolbox">
+        				<div class="toolbox-left">
+                         <a href="#" class="sidebar-toggler"><i class="icon-bars"></i>Filters</a> 
+
+        				<div class="toolbox-right">
+        				</div><!-- End .toolbox-right -->
+        			</div><!-- End .toolbox -->
+
+                    <div class="sidebar-filter-overlay"></div><!-- End .sidebar-filter-overlay -->
+                    <aside class="sidebar-shop sidebar-filter">
+                        <div class="sidebar-filter-wrapper">
+                            <div class="widget widget-clean">
+                                <label><i class="icon-close"></i>Filterlər</label>
+                                <a href="{% url 'blog:shop' %}" class="sidebar-filter-clear"> Sıfırla</a>
+                            </div><!-- End .widget -->
+                            <div class="widget widget-collapsible">
+
+                                <div class="collapse show" id="widget-1">
+                                    <div class="widget-body">
+                                        <div class="filter-items filter-items-count">
+                                            <form method='get'>
+                                                {{geyim_filter.form|crispy}}
+                                                <button class="btn btn-sm btn-danger" type='submit'>Filter</button>
+                                            </form>
+                                        </div><!-- End .filter-items -->
+                                    </div><!-- End .widget-body -->
+                                </div><!-- End .collapse -->
+                            </div><!-- End .widget -->
+
+
+                            <div class="widget widget-collapsible">
+
+                            </div><!-- End .widget -->
+                        </div><!-- End .sidebar-filter-wrapper -->
+                    </aside><!-- End .sidebar-filter -->
+                </div><!-- End .container-fluid -->
+                <div class='w-100'>
+                    <div class='container'>
+                        <div class=' d-flex flex-wrap'>
+                                {%  for i in clothes %}
+                                            <div class="product product-7 text-center col-lg-3">
+                                                <figure class="product-media">
+                                                    <a href="{% url 'blog:detail' i.id %}">
+                                                    {% if i.addimage_set.all%}
+                                                     <img id="product-zoom" src="{{ i.addimage_set.first.image.url }}" data-zoom-image="assets/images/products/single/1-big.jpg" alt="product image">
+                                                    {% endif %}
+                                                    </a>
+                                                    <div class="product-action-vertical">
+                                                        <a href="{% url 'blog:addfavori' i.id %}" class="btn-product-icon btn-wishlist btn-expandable{% for obj in myfavori %}{% if i == obj.geyim %} already-added {% endif %}{%endfor%}"><span>add to wishlist</span></a>
+                                                    </div><!-- End .product-action-vertical -->
+                
+                                                    <div class="product-action">
+                                                        <a href="{% url 'blog:addbasket' i.id %}" class="btn-product btn-cart"><span>add to cart</span></a>
+                                                    </div><!-- End .product-action -->
+                                                </figure><!-- End .product-media -->
+                
+                                                <div class="product-body">
+                                                    <div class="product-cat">
+                                                        <a href="#">{{ i.category }}</a>
+                                                    </div><!-- End .product-cat -->
+                                                    <h3 class="product-title"><a href="{% url 'blog:detail' i.id  %}">{{ i.title }}</a></h3><!-- End .product-title -->
+                                                    <div class="product-price">
+                                                        {{ i.cost }}
+                                                    </div><!-- End .product-price -->
+                
+                                                    <div class="product-nav product-nav-thumbs">
+                                                        {% for image in i.addimage_set.all %}
+                                                    <a class="product-gallery-item active" href="#" data-image="assets/images/products/single/1.jpg" data-zoom-image="assets/images/products/single/1-big.jpg">
+                                                        <img src="{{ image.image.url }}" alt="product side">
+                                                    </a>
+                                                    {% endfor %}
+                                                    </div><!-- End .product-nav -->
+                                                </div><!-- End .product-body -->
+                                            </div><!-- End .product -->
+                                            {% endfor %}      
+                                        </div>
+                </div
+
+
+                                        <div class=' d-flex justify-content-center'>
+                                            {% if clothes.has_previous %}
+							<a href="?page=1">First</a>
+							<a href="?page={{clothes.previous_page_number}}">Previous</a>
+							{% endif %}
+							Page: {{clothes.number}} of {{clothes.paginator.num_pages}}
+
+							{% if clothes.has_next %}
+							<a href="?page={{clothes.next_page_number}}&{% for key, val in filter_data %}{{key}}={{val}}&{% endfor %}">next</a>
+							<a href="?page={{clothes.paginator.num_pages}}">Last</a>
+							{% endif %}
+                                        </div>
+            </div><!-- End .page-content -->
+        </main><!-- End .main -->
+        
+    
+            {% endblock body %}

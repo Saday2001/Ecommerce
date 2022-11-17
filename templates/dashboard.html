@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+
+
+        <div class='w-100 h-100  py-5'>
+            <div class='w-100'>
+                <div class='container'>
+                    <div class=' d-flex flex-wrap'>
+                      
+                        <div class="products mb-3  col-lg-12 d-flex flex-wrap">
+                            {% for i in geyim %}
+                            <div class="product product-list col-lg-6">
+                                <div class="row">
+                                    <div class="col-6 col-lg-6">
+                                        <figure class="product-media">
+                                            <a href="{% url 'blog:detail' i.id %}">
+                                                {% if i.addimage_set.all%}
+                                                <img id="product-zoom" src="{{ i.addimage_set.first.image.url }}" data-zoom-image="assets/images/products/single/1-big.jpg" alt="product image">
+                                                {% endif %}
+                                            </a>
+                                        </figure><!-- End .product-media -->
+                                    </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                    <div class="col-lg-6">
+                                        <div class="product-body product-action-inner">
+                                            {% comment %} <a href="{% url 'blog:addfavori' i.id %}" class="btn-product btn-wishlist" title="Add to wishlist"><span>Sevimlilərə əlavə et</span></a> {% endcomment %}
+                                           <p class='text-danger'>150.00</p>
+                                            <div class="product-cat">
+                                                <a href="{% url 'blog:detail' i.id %}">{{ i.title }}</a>
+                                            </div><!-- End .product-cat -->
+                                            <div class="product-cat">
+                                                <a href="{% url 'blog:delete_baza' i.id %}">Sil</a>
+                                            </div><!-- End .product-cat -->
+                                            <div class="product-content">
+                                                <p>{{ i.about }}</p>
+                                            </div><!-- End .product-content -->
+                                            <div class="product-content">
+                                                <p>{{ i.click }}</p>
+                                            </div><!-- End .product-content -->
+                                            
+                                            <div class="product-nav product-nav-thumbs">
+                                                {% for image in i.addimage_set.all %}
+                                                <a class="product-gallery-item active" href="#" data-image="assets/images/products/single/1.jpg" data-zoom-image="assets/images/products/single/1-big.jpg">
+                                                    <img src="{{ image.image.url }}" alt="product side">
+                                                </a>
+                                                {% endfor %}
+                                            </div><!-- End .product-nav -->
+                                        </div><!-- End .product-body -->
+                                    </div><!-- End .col-lg-6 -->
+                                </div><!-- End .row -->
+                            </div><!-- End .product -->
+                            {% endfor %}
+                                    </div>
+            </div
+            </div>
+
+        </div>
+
+        
+
+{% endblock body %}

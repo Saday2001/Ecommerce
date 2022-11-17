@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block body %}
+{% load crispy_forms_tags %}     
+
+<main class="main">
+    <nav aria-label="breadcrumb" class="breadcrumb-nav border-0 mb-0">
+        <div class="container">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Ana səhifə</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Daxil ol</li>
+            </ol>
+        </div><!-- End .container -->
+    </nav><!-- End .breadcrumb-nav -->
+
+    <div class="container py-5">
+        <h1>Register</h1>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form|crispy }}                    
+            <button class="btn btn-primary" type="submit">Qeydiyyat</button>
+        </form>
+        <p class="text-center">Əgər hesabın varsa, <a href="{% url 'user:login' %}">Daxil ol</a></p>
+    </div>
+
+</main><!-- End .main -->
+
+
+
+
+{% endblock body %}

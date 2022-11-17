@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block body %}
+{% load crispy_forms_tags %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+   {% if user.is_authenticated %}
+   <div class="container py-5">
+    
+    <h1>Sən də sat</h1>
+    <form method="POST" enctype="multipart/form-data" id="add-form-one">
+      {% csrf_token %}
+
+
+      <div id="add-form">
+        <ul >
+           <li>
+          {{ form.title|as_crispy_field }}
+           </li>
+          <li>
+          {{ form.gender|as_crispy_field }}        
+          </li>
+          <li>
+          {{ form.brend|as_crispy_field }}        
+          </li>
+          
+        </ul> 
+
+        <ul>
+          <li>
+            {{ form.category|as_crispy_field }}        
+            </li>
+
+            <li>
+              {{ form.subb|as_crispy_field }}        
+              </li>
+
+          </ul>
+
+        
+        <ul>
+          
+              <li>
+            {{ form.size|as_crispy_field }}        
+            </li>
+            <li>
+            {{ form.color|as_crispy_field }}        
+            </li>
+            <li>
+            {{ form.about|as_crispy_field }}        
+            </li>
+            <li>
+              {{ form.cost|as_crispy_field }}        
+            </li>
+        </ul>
+      </div>
+      <div class="form-group mb-4">
+        <div class="form-group mb-4">
+          <div id="imagesDiv" class="mb-4">
+              <input type="file" name="image" accept="image/png, image/gif, image/jpeg"/>
+          </div>
+
+          <a class="btn btn-primary" id="addImageButton" onclick="addImage()"> + </a>
+      </div>
+    </div>
+
+
+
+<div id="add-form-button">
+   <button class="btn btn-primary " type="submit" id="add-form-button">Əlavə et</button>
+</div>
+     
+    </form>
+  </div>
+  {% else %}
+  <div class='giris'>
+    <h4>Bu səhifədən istifadə etmək üçün sayta giriş etməlisiniz!</h4>
+    <p class="text-center">Giriş üçün <a href="{% url 'user:login' %}">Daxil ol</a></p>
+  </div>
+
+ 
+  {% endif %}
+
+  {% block js %}
+
+  <script>
+      function addImage() {
+          var image_inputs = $("input[type='file']").length
+
+
+          if (image_inputs < 5) {
+              $("#imagesDiv").append(`
+                  <input type="file" name="image" accept="image/png, image/gif, image/jpeg" />
+              `)
+          }
+
+          if (image_inputs >= 2) {
+              $("#addImageButton").css("display", "none")
+          }
+      }
+  </script>
+
+{% endblock js %}
+  
+{% endblock %}
+

@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block body %}
+{% load static %}
+{% load crispy_forms_tags%}
+
+        <main class="main">
+        	<div class="page-header text-center" style="background-image: url('{% static 'images/page-header-bg.jpg' %}')">
+        		<div class="container">
+        			<h1 class="page-title">List<span>Kategoriya</span></h1>
+        		</div><!-- End .container -->
+        	</div><!-- End .page-header -->
+            <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'blog:index' %}">Ana səhifə</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'blog:shop' %}">Mağaza</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Siyahı</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+
+            <div class="page-content">
+                <div class="container">
+                	<div class="row">
+                		<div class="col-lg-12">
+                			<div class="toolbox">
+                			
+                			</div><!-- End .toolbox -->
+							<div class='border_filter'>
+
+								
+								
+                            {% for i in venues %}
+                            <div class="products mb-3">
+                                <div class="product product-list">
+                                    <div class="row">
+                                        <div class="col-6 col-lg-3">
+                                            <figure class="product-media">
+                                                {% if i.addimage_set.all%}
+                                                    <img id="product-zoom" src="{{ i.addimage_set.first.image.url }}" data-zoom-image="assets/images/products/single/1-big.jpg" alt="product image">
+                                                {% endif %}
+                                            </figure><!-- End .product-media -->
+                                        </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                        <div class="col-6 col-lg-3 order-lg-last">
+                                            <div class="product-list-action">
+                                                <div class="product-price">
+                                                    {{ i.cost }}
+                                                </div><!-- End .product-price -->
+
+                                                <a href="{% url 'blog:addbasket' i.id %}" class="btn-product btn-cart"><span>add to cart</span></a>
+                                            </div><!-- End .product-list-action -->
+                                        </div><!-- End .col-sm-6 col-lg-3 -->
+
+                                        <div class="col-lg-6">
+                                            <div class="product-body product-action-inner">
+                                                <a href="{% url 'blog:addfavori' i.id %}" class="btn-product btn-wishlist" title="Add to wishlist"><span>Sevimlilərə əlavə et</span></a>
+                                                <div class="product-cat">
+                                                    <a href="{% url 'blog:detail' i.id %}">{{ i.title }}</a>
+                                                </div><!-- End .product-cat -->
+                                                <div class="product-content">
+                                                    <p>{{ i.about }}</p>
+                                                </div><!-- End .product-content -->
+                                                
+                                                <div class="product-nav product-nav-thumbs">
+                                                    {% for image in i.addimage_set.all %}
+                                                    <a class="product-gallery-item active" href="#" data-image="assets/images/products/single/1.jpg" data-zoom-image="assets/images/products/single/1-big.jpg">
+                                                        <img src="{{ image.image.url }}" alt="product side">
+                                                    </a>
+                                                    {% endfor %}
+                                                </div><!-- End .product-nav -->
+                                            </div><!-- End .product-body -->
+                                        </div><!-- End .col-lg-6 -->
+                                    </div><!-- End .row -->
+                                </div><!-- End .product -->
+                                {% endfor %}
+                            </div><!-- End .products -->
+						</div>
+{% comment %} 
+							<br/></br/>
+							{{venues}}
+							Has Previoes: {{venues.has_previous}}<br/>
+							Has Next: {{venues.has_next}}<br/>
+							Current Page {{venues.number}}<br/>
+							Number of Pages {{venues.paginator.num_pages}}<br/>
+							<hr><br/><br/> {% endcomment %}
+							{% if venues.has_previous %}
+							<a href="?page=1">First</a>
+							<a href="?page={{venues.previous_page_number}}">Previous</a>
+							{% endif %}
+							Page: {{venues.number}} of {{venues.paginator.num_pages}}
+
+							{% if venues.has_next %}
+							<a href="?page={{venues.next_page_number}}">next</a>
+							<a href="?page={{venues.paginator.num_pages}}">Last</a>
+							{% endif %}
+                		</div><!-- End .col-lg-9 -->
+                	
+                	</div><!-- End .row -->
+                </div><!-- End .container -->
+            </div><!-- End .page-content -->
+        </main><!-- End .main -->
+
+        {% endblock body %}

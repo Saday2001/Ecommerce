@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+{% load static %}
+        <main class="main">
+        	<div class="page-header text-center" style="background-image: url('{% static 'images/page-header-bg.jpg' %}')">
+        		<div class="container">
+        			<h1 class="page-title">Səbət<span>Mağaza</span></h1>
+        		</div><!-- End .container -->
+        	</div><!-- End .page-header -->
+            <nav aria-label="breadcrumb" class="breadcrumb-nav">
+                <div class="container">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{% url 'blog:index' %}">Ana səhifə</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'blog:shop' %}">Mağaza</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Səbət</li>
+                    </ol>
+                </div><!-- End .container -->
+            </nav><!-- End .breadcrumb-nav -->
+			{% if request.user.is_authenticated %}
+            <div class="page-content">
+            	<div class="cart">
+	                <div class="container">
+	                	<div class="row">
+	                		<div class="col-lg-12">
+	                			<table class="table table-cart table-mobile">
+									<thead>
+										<tr>
+											<th>Məhsul</th>
+											<th>Qiymət</th>
+											<th></th>
+										</tr>
+									</thead>
+									
+									{% for i in basket_list %}
+							<tr>
+								<td class="product-col">
+									<div class="product">
+										<figure class="product-media">
+											{% if i.geyim.addimage_set.all%}
+                                            <img id="product-zoom" src="{{ i.geyim.addimage_set.first.image.url }}" data-zoom-image="assets/images/products/single/1-big.jpg" alt="product image">
+                                            {% endif %}
+										</figure>
+
+										<h3 class="product-title">
+											<a href="{% url 'blog:product_categories' i.geyim.category_id %}">{{ i.geyim.category }}</a>
+										</h3><!-- End .product-title -->
+									</div><!-- End .product -->
+								</td>
+								<td class="price-col">{{ i.geyim.cost }}</td>
+								<td class="remove-col"><button class="btn-remove"><a href="{% url 'blog:deletefav' i.geyim.id %}"><i class="icon-close"></i></a></button></td>
+								
+								<td class="remove-col"><button class="btn-remove"><a href="{% url 'blog:addbasket' i.geyim.id %}">  <i class="icon-shopping-cart"></i></a></button></td>
+							</tr>
+                            {% endfor %}
+									
+								</table><!-- End .table table-wishlist -->
+	                		</div><!-- End .col-lg-9 -->
+	                	</div><!-- End .row -->
+	                </div><!-- End .container -->
+                </div><!-- End .cart -->
+            </div><!-- End .page-content -->
+			{% else %}
+			<div class='giris'>
+				<h4>Bu səhifədən istifadə etmək üçün sayta giriş etməlisiniz!</h4>
+				<p class="text-center">Giriş üçün <a href="{% url 'user:login' %}">Daxil ol</a></p>
+			  </div>
+			{% endif %}
+        </main><!-- End .main -->
+
+        {% endblock body %}

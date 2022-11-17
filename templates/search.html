@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+{% load static %}
+{% load crispy_forms_tags%}
+
+<main>
+<div class="page-header text-center" style="background-image: url('{% static 'images/page-header-bg.jpg' %}')">
+    <div class="container-fluid">
+        <h1 class="page-title">Axtarışın nəticəsi<span></span></h1>
+    </div><!-- End .container-fluid -->
+</div><!-- End .page-header -->
+  <div class="container-fluid py-3">
+   <div class="container  ">
+       <div class="row d-flex ">
+           <div class="col-lg-12  d-flex">
+               <div class="row">
+                {% if geyimler %}
+                   {%  for i in geyimler%}
+                        <div class="product product-7 text-center col-lg-3">
+                            <figure class="product-media">
+                                <a href="{% url 'blog:detail' i.id %}">
+                                {% if i.addimage_set.all%}
+                                <img id="product-zoom" src="{{ i.addimage_set.first.image.url }}" data-zoom-image="assets/images/products/single/1-big.jpg" alt="product image">
+                                {% endif %}
+                                <div class="product-action-vertical">
+                                    <a href="{% url 'blog:addfavori' i.id %}" class="btn-product-icon btn-wishlist btn-expandable {% for obj in myfavori %}{% if i == obj.geyim %} already-added {% endif %}{%endfor%}"><span>add to wishlist</span></a>
+                                </div><!-- End .product-action-vertical -->
+
+                                <div class="product-action">
+                                    <a href="{% url 'blog:addbasket' i.id %}" class="btn-product btn-cart"><span>add to cart</span></a>
+                                </div><!-- End .product-action -->
+                            </figure><!-- End .product-media -->
+
+                            <div class="product-body">
+                                <div class="product-cat">
+                                    <a href="{% url 'blog:product_categories' i.category_id %}">{{ i.category }}</a>
+                                </div><!-- End .product-cat -->
+                                <h3 class="product-title"><a href="{% url 'blog:detail' i.id  %}">{{ i.title }}</a></h3><!-- End .product-title -->
+                                <div class="product-price">
+                                    {{ i.cost }}
+                                </div><!-- End .product-price -->
+                                <div class="product-price">
+                                    Baxış sayı: {{ i.click }}
+                                 </div><!-- End .product-price -->
+
+
+                                <div class="product-nav product-nav-thumbs">
+                                    {% for image in i.addimage_set.all %}
+                                    <a class="product-gallery-item active" href="#" data-image="assets/images/products/single/1.jpg" data-zoom-image="assets/images/products/single/1-big.jpg">
+                                        <img src="{{ image.image.url }}" alt="product side">
+                                    </a>
+                                    {% endfor %}
+                                </div><!-- End .product-nav -->
+                            </div><!-- End .product-body -->
+                        </div><!-- End .product -->
+                    {% endfor %}  
+                {% else %}
+                    <div class="container-fluid">
+                        <h1 class="page-title">No data found <span></span></h1>
+                    </div><!-- End .container-fluid -->
+                {% endif %}                                       
+               </div>  
+           </div>
+       </div>
+   </div>
+</div>
+</main>
+
+
+
+
+{% endblock body %}
