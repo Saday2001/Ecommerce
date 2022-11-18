@@ -51,7 +51,7 @@
 								<td class="price-col">{{ i.geyim.cost }}</td>
 								<td class="remove-col"><button class="btn-remove"><a href="{% url 'blog:deletefav' i.geyim.id %}"><i class="icon-close"></i></a></button></td>
 								
-								<td class="remove-col"><button class="btn-remove"><a href="{% url 'blog:addbasket' i.geyim.id %}">  <i class="icon-shopping-cart"></i></a></button></td>
+								<td class="remove-col"><button class="btn-remove"><a href="tel: {{i.user.phone}}">  <i class="fa-solid fa-phone"></i></a></button></td>
 							</tr>
                             {% endfor %}
 									

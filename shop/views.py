@@ -31,23 +31,12 @@ def index(request):
     context={}
     context['mydata'] = Clothes.objects.all().order_by('-created_date').exclude(author_id=request.user.id)
     context['myclick'] = Clothes.objects.all().order_by('-click').exclude(author_id=request.user.id)
-    context['mydatas']=d = Clothes.objects.filter(author_id=request.user.id)
+    context['mydatas']=d = Clothes.objects.filter(author_id=request.user.id).order_by('-created_date')
     if request.user.is_authenticated:
 
         context['favori_count']=Favori.objects.filter(user=request.user).count()
         context['myfavori']=Favori.objects.filter(user=request.user)
-        if request.method == 'POST':
-           form = ContactForm(request.POST)
-           if form.is_valid():
-                teklif = form.save(commit=False)
-                teklif.user = request.user
-                teklif.created_date = timezone.now()
-                teklif.save()
-                return HttpResponseRedirect('/')
-        else:
-            form = ContactForm()
         
-        context['form'] = form
         return render(request, 'index.html', context)
       
     return render(request, 'index.html', context)
@@ -102,7 +91,7 @@ def shop(request):
     
 
 
-    p=Paginator(geyim_filter.qs, 2)
+    p=Paginator(geyim_filter.qs, 20)
     page = request.GET.get('page')
     clothes = p.get_page(page)
     
@@ -187,7 +176,7 @@ def Addclothes(request):
 
     if request.method == 'POST':
         form = ClothesForm(request.POST or None)
-        images = request.Files.getlist('images', None)
+        images = request.FILES.getlist('image', None)
         if form.is_valid() and images:
             geyim = form.save(commit=False)
             geyim.author = request.user
@@ -195,7 +184,7 @@ def Addclothes(request):
             geyim.save()
 
             for image in images:
-                geyim_image = AddImage.objects.all(
+                AddImage.objects.create(
                     product = geyim, image=image
                 )
             messages.success(request, ' Geyiminizi uğurla əlavə etdiniz!')

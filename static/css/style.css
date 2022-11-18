@@ -15911,6 +15911,7 @@ button:focus {
 
 .blog-posts .entry-media {
   margin-bottom: 1.7rem;
+  
 }
 
 .blog-posts .entry-meta {
@@ -18173,8 +18174,18 @@ button:focus {
   position: relative;
   background-color: #ccc;
   margin-bottom: 2.4rem;
+  width: 374px;
+  height: 374px;
 }
-
+.entry-media img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+#product-zoom{
+  width: 100%;
+  height: 100%;
+}
 .entry-media>a {
   position: relative;
   display: block;
